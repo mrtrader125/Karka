@@ -10,23 +10,20 @@ function Register() {
   const handleRegister = (e) => {
     e.preventDefault();
 
-    // get existing users
     const storedUsers = localStorage.getItem("users");
     const users = storedUsers ? JSON.parse(storedUsers) : [];
 
-    // check if email already exists
     const exists = users.find((u) => u.email === email);
     if (exists) {
       alert("User already exists with this email");
       return;
     }
 
-    // save new user
     users.push({ name, email, password });
     localStorage.setItem("users", JSON.stringify(users));
 
     alert("Registration successful!");
-    navigate("/"); // redirect to login
+    navigate("/");
   };
 
   return (
@@ -70,7 +67,6 @@ function Register() {
               boxSizing: "border-box",
             }}
           />
-
           <input
             type="email"
             placeholder="Email"
@@ -86,7 +82,6 @@ function Register() {
               boxSizing: "border-box",
             }}
           />
-
           <input
             type="password"
             placeholder="Password"
@@ -102,7 +97,6 @@ function Register() {
               boxSizing: "border-box",
             }}
           />
-
           <button
             type="submit"
             style={{

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import {
   Grid,
   Card,
@@ -11,23 +10,39 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 function Vegetables() {
-  const [products, setProducts] = useState([]);
+  const [products] = useState([
+    {
+      _id: "veg-1",
+      name: "Tomato",
+      price: 30,
+      image:
+        "https://images.pexels.com/photos/8390/food-wood-tomatoes.jpg",
+    },
+    {
+      _id: "veg-2",
+      name: "Potato",
+      price: 25,
+      image:
+        "https://images.pexels.com/photos/162763/potatoes-raw-fresh-food-162763.jpeg",
+    },
+    {
+      _id: "veg-3",
+      name: "Carrot",
+      price: 40,
+      image:
+        "https://images.pexels.com/photos/65174/pexels-photo-65174.jpeg",
+    },
+    {
+      _id: "veg-4",
+      name: "Onion",
+      price: 35,
+      image:
+        "https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg",
+    },
+  ]);
+
   const [favorites, setFavorites] = useState({});
 
-  // 🥬 Fetch vegetables
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(" /api/store/Vegetables");
-        setProducts(res.data);
-      } catch (err) {
-        console.error("Error fetching vegetables:", err);
-      }
-    };
-    fetchData();
-  }, []);
-
-  // ❤️ Toggle favorite and store in wishlist
   const toggleFavorite = (product) => {
     setFavorites((prev) => ({
       ...prev,
@@ -38,19 +53,14 @@ function Vegetables() {
     const exists = wishlist.find((item) => item._id === product._id);
 
     if (exists) {
-      // Remove from wishlist
       wishlist = wishlist.filter((item) => item._id !== product._id);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      // alert(`${product.name} removed from wishlist 💔`);
     } else {
-      // Add to wishlist
       wishlist.push(product);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      // alert(`${product.name} added to wishlist ❤️`);
     }
   };
 
-  // 🛒 Add to cart
   const handleAddToCart = (product) => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const existingItem = cart.find((item) => item._id === product._id);
@@ -66,7 +76,7 @@ function Vegetables() {
   };
 
   return (
-    <div style={{ padding: "60px",paddingTop:"100px" }}>
+    <div style={{ padding: "60px", paddingTop: "100px" }}>
       <Typography variant="h4" align="center" gutterBottom>
         Vegetables Category
       </Typography>
@@ -86,7 +96,6 @@ function Vegetables() {
                 "&:hover": { transform: "scale(1.03)" },
               }}
             >
-              {/* ❤️ Favorite Button */}
               <IconButton
                 onClick={() => toggleFavorite(item)}
                 sx={{
@@ -99,20 +108,18 @@ function Vegetables() {
                 <FavoriteIcon />
               </IconButton>
 
-              {/* 🖼️ Product Image */}
               <img
                 src={item.image}
                 alt={item.name}
                 style={{
                   width: "100%",
                   height: "120px",
-                  objectFit: "contain",
+                  objectFit: "cover",
                   borderRadius: 3,
                   marginTop: "10px",
                 }}
               />
 
-              {/* 📦 Product Details */}
               <CardContent sx={{ textAlign: "center", padding: "10px" }}>
                 <Typography
                   variant="h6"
@@ -127,7 +134,6 @@ function Vegetables() {
                   ₹{item.price}
                 </Typography>
 
-                {/* 🛒 Add to Cart Button */}
                 <Button
                   variant="contained"
                   color="success"

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import {
   Grid,
   Card,
@@ -11,23 +10,32 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 function Nuts() {
-  const [products, setProducts] = useState([]);
+  const [products] = useState([
+    {
+      _id: "nut-1",
+      name: "Almonds",
+      price: 600,
+      image:
+        "https://images.pexels.com/photos/4110207/pexels-photo-4110207.jpeg",
+    },
+    {
+      _id: "nut-2",
+      name: "Cashews",
+      price: 700,
+      image:
+        "https://images.pexels.com/photos/4110257/pexels-photo-4110257.jpeg",
+    },
+    {
+      _id: "nut-3",
+      name: "Pistachios",
+      price: 800,
+      image:
+        "https://images.pexels.com/photos/137119/pexels-photo-137119.jpeg",
+    },
+  ]);
+
   const [favorites, setFavorites] = useState({});
 
-  // 🥬 Fetch fruits
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(" /api/store/Nuts");
-        setProducts(res.data);
-      } catch (err) {
-        console.error("Error fetching fruits:", err);
-      }
-    };
-    fetchData();
-  }, []);
-
-  // ❤️ Toggle favorite and store in wishlist
   const toggleFavorite = (product) => {
     setFavorites((prev) => ({
       ...prev,
@@ -38,19 +46,14 @@ function Nuts() {
     const exists = wishlist.find((item) => item._id === product._id);
 
     if (exists) {
-      // Remove from wishlist
       wishlist = wishlist.filter((item) => item._id !== product._id);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      // alert(`${product.name} removed from wishlist 💔`);
     } else {
-      // Add to wishlist
       wishlist.push(product);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      // alert(`${product.name} added to wishlist ❤️`);
     }
   };
 
-  // 🛒 Add to cart
   const handleAddToCart = (product) => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const existingItem = cart.find((item) => item._id === product._id);
@@ -66,7 +69,7 @@ function Nuts() {
   };
 
   return (
-    <div style={{ padding: "60px",paddingTop:"100px" }}>
+    <div style={{ padding: "60px", paddingTop: "100px" }}>
       <Typography variant="h4" align="center" gutterBottom>
         Nuts Category
       </Typography>
@@ -86,7 +89,6 @@ function Nuts() {
                 "&:hover": { transform: "scale(1.03)" },
               }}
             >
-              {/* ❤️ Favorite Button */}
               <IconButton
                 onClick={() => toggleFavorite(item)}
                 sx={{
@@ -99,20 +101,18 @@ function Nuts() {
                 <FavoriteIcon />
               </IconButton>
 
-              {/* 🖼️ Product Image */}
               <img
                 src={item.image}
                 alt={item.name}
                 style={{
                   width: "100%",
                   height: "120px",
-                  objectFit: "contain",
+                  objectFit: "cover",
                   borderRadius: 3,
                   marginTop: "10px",
                 }}
               />
 
-              {/* 📦 Product Details */}
               <CardContent sx={{ textAlign: "center", padding: "10px" }}>
                 <Typography
                   variant="h6"
@@ -127,7 +127,6 @@ function Nuts() {
                   ₹{item.price}
                 </Typography>
 
-                {/* 🛒 Add to Cart Button */}
                 <Button
                   variant="contained"
                   color="success"

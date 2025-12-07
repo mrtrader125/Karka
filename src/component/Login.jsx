@@ -9,11 +9,11 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Get stored users
+    // Get stored users from localStorage (created by Register)
     const storedUsers = localStorage.getItem("users");
     const users = storedUsers ? JSON.parse(storedUsers) : [];
 
-    // Check if user exists
+    // Find user with matching email & password
     const user = users.find(
       (u) => u.email === email && u.password === password
     );
@@ -23,7 +23,7 @@ function Login() {
       return;
     }
 
-    // Save a fake token + user info
+    // Save a fake token + current user
     localStorage.setItem("token", "dummy-token");
     localStorage.setItem("currentUser", JSON.stringify(user));
 
@@ -72,7 +72,6 @@ function Login() {
               boxSizing: "border-box",
             }}
           />
-
           <input
             type="password"
             placeholder="Password"
@@ -88,7 +87,6 @@ function Login() {
               boxSizing: "border-box",
             }}
           />
-
           <button
             type="submit"
             style={{

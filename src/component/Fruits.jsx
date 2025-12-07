@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+// src/component/Fruits.jsx
+import React, { useState } from "react";
 import {
   Grid,
   Card,
@@ -11,21 +11,39 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 function Fruits() {
-  const [products, setProducts] = useState([]);
-  const [favorites, setFavorites] = useState({});
+  // Static demo products (no backend)
+  const [products] = useState([
+    {
+      _id: "fruit-1",
+      name: "Apple",
+      price: 120,
+      image:
+        "https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg",
+    },
+    {
+      _id: "fruit-2",
+      name: "Banana",
+      price: 40,
+      image:
+        "https://images.pexels.com/photos/461208/pexels-photo-461208.jpeg",
+    },
+    {
+      _id: "fruit-3",
+      name: "Orange",
+      price: 80,
+      image:
+        "https://images.pexels.com/photos/42059/background-vegetables-fruits-bananas-42059.jpeg",
+    },
+    {
+      _id: "fruit-4",
+      name: "Grapes",
+      price: 90,
+      image:
+        "https://images.pexels.com/photos/708777/pexels-photo-708777.jpeg",
+    },
+  ]);
 
-  // 🥬 Fetch fruits
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(" /api/store/Fruits");
-        setProducts(res.data);
-      } catch (err) {
-        console.error("Error fetching fruits:", err);
-      }
-    };
-    fetchData();
-  }, []);
+  const [favorites, setFavorites] = useState({});
 
   // ❤️ Toggle favorite and store in wishlist
   const toggleFavorite = (product) => {
@@ -38,15 +56,11 @@ function Fruits() {
     const exists = wishlist.find((item) => item._id === product._id);
 
     if (exists) {
-      // Remove from wishlist
       wishlist = wishlist.filter((item) => item._id !== product._id);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      // alert(`${product.name} removed from wishlist 💔`);
     } else {
-      // Add to wishlist
       wishlist.push(product);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      // alert(`${product.name} added to wishlist ❤️`);
     }
   };
 
@@ -66,7 +80,7 @@ function Fruits() {
   };
 
   return (
-    <div style={{ padding: "60px",paddingTop:"100px" }}>
+    <div style={{ padding: "60px", paddingTop: "100px" }}>
       <Typography variant="h4" align="center" gutterBottom>
         Fruits Category
       </Typography>
@@ -106,7 +120,7 @@ function Fruits() {
                 style={{
                   width: "100%",
                   height: "120px",
-                  objectFit: "contain",
+                  objectFit: "cover",
                   borderRadius: 3,
                   marginTop: "10px",
                 }}

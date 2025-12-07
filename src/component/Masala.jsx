@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+// src/component/Masala.jsx
+import React, { useState } from "react";
 import {
   Grid,
   Card,
@@ -11,23 +11,32 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 function Masala() {
-  const [products, setProducts] = useState([]);
+  const [products] = useState([
+    {
+      _id: "masala-1",
+      name: "Turmeric Powder",
+      price: 50,
+      image:
+        "https://images.pexels.com/photos/1437598/pexels-photo-1437598.jpeg",
+    },
+    {
+      _id: "masala-2",
+      name: "Chili Powder",
+      price: 45,
+      image:
+        "https://images.pexels.com/photos/533343/pexels-photo-533343.jpeg",
+    },
+    {
+      _id: "masala-3",
+      name: "Garam Masala",
+      price: 70,
+      image:
+        "https://images.pexels.com/photos/1437598/pexels-photo-1437598.jpeg",
+    },
+  ]);
+
   const [favorites, setFavorites] = useState({});
 
-  // 🥬 Fetch Masala
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(" /api/store/Masala");
-        setProducts(res.data);
-      } catch (err) {
-        console.error("Error fetching masala:", err);
-      }
-    };
-    fetchData();
-  }, []);
-
-  // ❤️ Toggle favorite and store in wishlist
   const toggleFavorite = (product) => {
     setFavorites((prev) => ({
       ...prev,
@@ -38,19 +47,14 @@ function Masala() {
     const exists = wishlist.find((item) => item._id === product._id);
 
     if (exists) {
-      // Remove from wishlist
       wishlist = wishlist.filter((item) => item._id !== product._id);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      // alert(`${product.name} removed from wishlist 💔`);
     } else {
-      // Add to wishlist
       wishlist.push(product);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      // alert(`${product.name} added to wishlist ❤️`);
     }
   };
 
-  // 🛒 Add to cart
   const handleAddToCart = (product) => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const existingItem = cart.find((item) => item._id === product._id);
@@ -66,7 +70,7 @@ function Masala() {
   };
 
   return (
-    <div style={{padding: "60px",paddingTop:"100px" }}>
+    <div style={{ padding: "60px", paddingTop: "100px" }}>
       <Typography variant="h4" align="center" gutterBottom>
         Masala Category
       </Typography>
@@ -86,7 +90,6 @@ function Masala() {
                 "&:hover": { transform: "scale(1.03)" },
               }}
             >
-              {/* ❤️ Favorite Button */}
               <IconButton
                 onClick={() => toggleFavorite(item)}
                 sx={{
@@ -99,20 +102,18 @@ function Masala() {
                 <FavoriteIcon />
               </IconButton>
 
-              {/* 🖼️ Product Image */}
               <img
                 src={item.image}
                 alt={item.name}
                 style={{
                   width: "100%",
                   height: "120px",
-                  objectFit: "contain",
+                  objectFit: "cover",
                   borderRadius: 3,
                   marginTop: "10px",
                 }}
               />
 
-              {/* 📦 Product Details */}
               <CardContent sx={{ textAlign: "center", padding: "10px" }}>
                 <Typography
                   variant="h6"
@@ -127,7 +128,6 @@ function Masala() {
                   ₹{item.price}
                 </Typography>
 
-                {/* 🛒 Add to Cart Button */}
                 <Button
                   variant="contained"
                   color="success"
