@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import {
   Grid,
   Card,
@@ -11,21 +10,38 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 function Seeds() {
-  const [products, setProducts] = useState([]);
-  const [favorites, setFavorites] = useState({});
+  const [products] = useState([
+    {
+      _id: "seed-1",
+      name: "Sunflower Seeds",
+      price: 120,
+      image:
+        "https://images.pexels.com/photos/5945942/pexels-photo-5945942.jpeg",
+    },
+    {
+      _id: "seed-2",
+      name: "Pumpkin Seeds",
+      price: 150,
+      image:
+        "https://images.pexels.com/photos/5945901/pexels-photo-5945901.jpeg",
+    },
+    {
+      _id: "seed-3",
+      name: "Flax Seeds",
+      price: 90,
+      image:
+        "https://images.pexels.com/photos/4110256/pexels-photo-4110256.jpeg",
+    },
+    {
+      _id: "seed-4",
+      name: "Chia Seeds",
+      price: 160,
+      image:
+        "https://images.pexels.com/photos/3735162/pexels-photo-3735162.jpeg",
+    },
+  ]);
 
-  // 🥬 Fetch fruits
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(" /api/store/Seeds");
-        setProducts(res.data);
-      } catch (err) {
-        console.error("Error fetching fruits:", err);
-      }
-    };
-    fetchData();
-  }, []);
+  const [favorites, setFavorites] = useState({});
 
   // ❤️ Toggle favorite and store in wishlist
   const toggleFavorite = (product) => {
@@ -38,15 +54,11 @@ function Seeds() {
     const exists = wishlist.find((item) => item._id === product._id);
 
     if (exists) {
-      // Remove from wishlist
       wishlist = wishlist.filter((item) => item._id !== product._id);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      // alert(`${product.name} removed from wishlist 💔`);
     } else {
-      // Add to wishlist
       wishlist.push(product);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      // alert(`${product.name} added to wishlist ❤️`);
     }
   };
 
@@ -66,7 +78,7 @@ function Seeds() {
   };
 
   return (
-    <div style={{ padding: "60px",paddingTop:"100px" }}>
+    <div style={{ padding: "60px", paddingTop: "100px" }}>
       <Typography variant="h4" align="center" gutterBottom>
         Seeds Category
       </Typography>
