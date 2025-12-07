@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import {
   Grid,
   Card,
@@ -11,21 +10,38 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 function Rice() {
-  const [products, setProducts] = useState([]);
-  const [favorites, setFavorites] = useState({});
+  const [products] = useState([
+    {
+      _id: "rice-1",
+      name: "Raw Rice",
+      price: 55,
+      image:
+        "https://images.pexels.com/photos/4110256/pexels-photo-4110256.jpeg",
+    },
+    {
+      _id: "rice-2",
+      name: "Boiled Rice",
+      price: 60,
+      image:
+        "https://images.pexels.com/photos/4110254/pexels-photo-4110254.jpeg",
+    },
+    {
+      _id: "rice-3",
+      name: "Basmati Rice",
+      price: 120,
+      image:
+        "https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg",
+    },
+    {
+      _id: "rice-4",
+      name: "Brown Rice",
+      price: 90,
+      image:
+        "https://images.pexels.com/photos/3735162/pexels-photo-3735162.jpeg",
+    },
+  ]);
 
-  // 🥬 Fetch fruits
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(" /api/store/Rice");
-        setProducts(res.data);
-      } catch (err) {
-        console.error("Error fetching fruits:", err);
-      }
-    };
-    fetchData();
-  }, []);
+  const [favorites, setFavorites] = useState({});
 
   // ❤️ Toggle favorite and store in wishlist
   const toggleFavorite = (product) => {
@@ -38,15 +54,11 @@ function Rice() {
     const exists = wishlist.find((item) => item._id === product._id);
 
     if (exists) {
-      // Remove from wishlist
       wishlist = wishlist.filter((item) => item._id !== product._id);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      // alert(`${product.name} removed from wishlist 💔`);
     } else {
-      // Add to wishlist
       wishlist.push(product);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      // alert(`${product.name} added to wishlist ❤️`);
     }
   };
 
@@ -66,7 +78,7 @@ function Rice() {
   };
 
   return (
-    <div style={{ padding: "60px",paddingTop:"100px" }}>
+    <div style={{ padding: "60px", paddingTop: "100px" }}>
       <Typography variant="h4" align="center" gutterBottom>
         Rice Category
       </Typography>
