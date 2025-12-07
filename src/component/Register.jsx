@@ -1,26 +1,32 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
-  const handleRegister = async (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
-    try {
-      await axios.post(" /api/register", {
-        name,
-        email,
-        password,
-      });
-      // alert("User registered successfully!");
-      navigate('/') // redirect to login
-    } catch (err) {
-      alert(err.response?.data?.message || "Registration failed");
+
+    // get existing users
+    const storedUsers = localStorage.getItem("users");
+    const users = storedUsers ? JSON.parse(storedUsers) : [];
+
+    // check if email already exists
+    const exists = users.find((u) => u.email === email);
+    if (exists) {
+      alert("User already exists with this email");
+      return;
     }
+
+    // save new user
+    users.push({ name, email, password });
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Registration successful!");
+    navigate("/"); // redirect to login
   };
 
   return (
@@ -34,12 +40,13 @@ function Register() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "60px",paddingTop:"100px"
+        padding: "60px",
+        paddingTop: "100px",
       }}
     >
       <div
         style={{
-          marginBottom:"80px",
+          marginBottom: "80px",
           width: "100%",
           maxWidth: "350px",
           textAlign: "center",
@@ -54,7 +61,7 @@ function Register() {
             onChange={(e) => setName(e.target.value)}
             required
             style={{
-               width: "100%",
+              width: "100%",
               padding: "12px",
               marginBottom: "15px",
               borderRadius: "8px",
@@ -63,13 +70,14 @@ function Register() {
               boxSizing: "border-box",
             }}
           />
+
           <input
             type="email"
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
             required
             style={{
-               width: "100%",
+              width: "100%",
               padding: "12px",
               marginBottom: "15px",
               borderRadius: "8px",
@@ -78,6 +86,7 @@ function Register() {
               boxSizing: "border-box",
             }}
           />
+
           <input
             type="password"
             placeholder="Password"
@@ -93,10 +102,11 @@ function Register() {
               boxSizing: "border-box",
             }}
           />
+
           <button
             type="submit"
             style={{
-               width: "100%",
+              width: "100%",
               padding: "12px",
               backgroundColor: "black",
               color: "white",
@@ -124,6 +134,3 @@ function Register() {
 }
 
 export default Register;
-
-
-
