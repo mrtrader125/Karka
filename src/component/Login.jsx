@@ -1,25 +1,34 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post(" /api/login", {
-        email,
-        password,
-      });
-      localStorage.setItem("token", res.data.token);
-      // alert("Login successful!");
-      navigate("/home")
-    } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+
+    // Get stored users
+    const storedUsers = localStorage.getItem("users");
+    const users = storedUsers ? JSON.parse(storedUsers) : [];
+
+    // Check if user exists
+    const user = users.find(
+      (u) => u.email === email && u.password === password
+    );
+
+    if (!user) {
+      alert("Invalid email or password");
+      return;
     }
+
+    // Save a fake token + user info
+    localStorage.setItem("token", "dummy-token");
+    localStorage.setItem("currentUser", JSON.stringify(user));
+
+    alert("Login successful!");
+    navigate("/home");
   };
 
   return (
@@ -33,12 +42,13 @@ function Login() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "60px",paddingTop:"100px"
+        padding: "60px",
+        paddingTop: "100px",
       }}
     >
       <div
         style={{
-          marginBottom:"80px",
+          marginBottom: "80px",
           width: "100%",
           maxWidth: "300px",
           textAlign: "center",
@@ -62,13 +72,14 @@ function Login() {
               boxSizing: "border-box",
             }}
           />
+
           <input
             type="password"
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
             required
             style={{
-             width: "100%",
+              width: "100%",
               padding: "12px",
               marginBottom: "15px",
               borderRadius: "8px",
@@ -77,6 +88,7 @@ function Login() {
               boxSizing: "border-box",
             }}
           />
+
           <button
             type="submit"
             style={{
