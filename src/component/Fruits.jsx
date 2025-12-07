@@ -18,7 +18,7 @@ function Fruits() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/store/Fruits");
+        const res = await axios.get(" /api/store/Fruits");
         setProducts(res.data);
       } catch (err) {
         console.error("Error fetching fruits:", err);

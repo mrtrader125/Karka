@@ -18,7 +18,7 @@ function MilkProduct() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/store/MilkProduct");
+        const res = await axios.get(" /api/store/MilkProduct");
         setProducts(res.data);
       } catch (err) {
         console.error("Error fetching fruits:", err);

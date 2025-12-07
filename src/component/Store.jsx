@@ -20,7 +20,7 @@ function Store() {
     const newProduct = { name, category, price, image };
 
     try {
-      await axios.post("http://localhost:5000/api/store", newProduct);
+      await axios.post(" /api/store", newProduct);
       // alert("Product added successfully!");
       // navigate("/products");
       setName("");

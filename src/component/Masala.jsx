@@ -18,7 +18,7 @@ function Masala() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/store/Masala");
+        const res = await axios.get(" /api/store/Masala");
         setProducts(res.data);
       } catch (err) {
         console.error("Error fetching masala:", err);
